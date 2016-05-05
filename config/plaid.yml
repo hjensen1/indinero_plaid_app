@@ -1,0 +1,16 @@
+development: &development
+  customer_id: 531fca07b8fc52161e000002
+  secret: fFkRzijvE54x2IRFHm7_cq
+  public_key: 826dd0ec38b8563e6a4cca62b369cc
+  endpoint: https://tartan.plaid.com/
+test:
+  <<: *development
+staging:
+  <<: *development
+cucumber:
+  <<: *development
+production:
+  customer_id: 531fca07b8fc52161e000002
+  secret: fFkRzijvE54x2IRFHm7_cq
+  public_key: 826dd0ec38b8563e6a4cca62b369cc
+  endpoint: https://api.plaid.com/
