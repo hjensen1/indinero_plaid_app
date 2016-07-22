@@ -1,6 +1,6 @@
 development: &development
-  customer_id: 531fca07b8fc52161e000002
-  secret: fFkRzijvE54x2IRFHm7_cq
+  client_id: test_id #531fca07b8fc52161e000002
+  secret: test_secret #fFkRzijvE54x2IRFHm7_cq
   public_key: 826dd0ec38b8563e6a4cca62b369cc
   endpoint: https://tartan.plaid.com/
 test:
@@ -10,7 +10,7 @@ staging:
 cucumber:
   <<: *development
 production:
-  customer_id: 531fca07b8fc52161e000002
+  client_id: 531fca07b8fc52161e000002
   secret: fFkRzijvE54x2IRFHm7_cq
   public_key: 826dd0ec38b8563e6a4cca62b369cc
   endpoint: https://api.plaid.com/

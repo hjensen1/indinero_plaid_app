@@ -1,23 +1,21 @@
 module Plaid
   class << self
     def search_institutions(params)
-      Connection.get_request('/institutions/search', params)
+      connector = Connector.new('/institutions/search', client: Plaid.client)
+      connector.get(params)
     end
 
     def all_institutions
-      
-    end
-  end
-
-  class Connection
-    class << self
-      def get_request(path, options = {})
-        uri = build_uri(path)
-        http = Net::HTTP.new(uri.host, uri.port)
-        http.use_ssl = true
-        response = http.get("#{uri.path}?#{options.to_param}")
-        parse_get_response(response.body)
+      list = []
+      results = 1
+      offset = 0
+      while results.present?
+        connector = Connector.new('/institutions/longtail', client: Plaid.client, auth: true)
+        results = connector.post(count: 1000, offset: offset)['results']
+        list += results
+        offset += 1000
       end
+      list
     end
   end
 end

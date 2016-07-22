@@ -53,10 +53,14 @@ Rails.application.routes.draw do
   #     # (app/controllers/admin/products_controller.rb)
   #     resources :products
   #   end
-  resources :plaid, only: [:create] do
+  resources :account, only: [] do
     collection do
       get :get_transactions
       get :search
+      get :all_institutions
+      get :institution_details
+      post :submit_credentials
+      post :submit_mfa
     end
   end
 end
