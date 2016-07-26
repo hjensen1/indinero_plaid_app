@@ -18,7 +18,15 @@ class AccountController < ApplicationController
     if institution.nil?
       render json: { errors: ["No institution with id #{params[:id]}"] }, status: 403
     else
-      render json: institution.slice('id', 'name', 'fields')
+      response = institution.slice('id', 'name', 'fields')
+      response['fields'] = response['fields'].map do |field|
+        {
+          type: field['type'],
+          name: field['name'],
+          description: field['label']
+        }
+      end
+      render json: response
     end
   end
 
@@ -31,7 +39,7 @@ class AccountController < ApplicationController
 
   def get_transactions
     transactions = @user.transactions
-    render json: { transactions: transactions, accounts: @user.accounts, access_token: @user.access_token }
+    render json: user_hash.merge(transactions: transactions)
   end
 
   def search
@@ -71,7 +79,8 @@ class AccountController < ApplicationController
 
   def user_hash
     if mfa = @user.mfa
-      mfa = [{ question: mfa[:message] }] if mfa[:message].present?
+      mfa = [mfa] unless mfa.is_a?(Array)
+      mfa = mfa.map { |question| { question: question[:message] || question[:question] } }
     end
     accounts = @user.accounts.map { |account| account_hash(account) } if @user.accounts.present?
     {
